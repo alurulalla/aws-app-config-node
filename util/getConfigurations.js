@@ -38,7 +38,6 @@ exports.configData = async () => {
       }
 
       const data = JSON.parse(str);
-
       configurations = Object.assign({}, data);
 
       return configurations;

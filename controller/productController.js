@@ -1,8 +1,12 @@
 const { configData } = require('../util/getConfigurations');
 
-const productV1 = [{ name: 'Product 1' }];
+const productV1 = [
+  { name: 'Product 1', price: '49.00', description: 'New Product 1' },
+];
 
-const productV2 = [{ name: 'Product 2' }];
+const productV2 = [
+  { name: 'Product 2', price: '99.00', description: 'New Product 2' },
+];
 
 const getConfigurations = async () => {
   try {
@@ -16,13 +20,18 @@ exports.getProducts = async (req, res) => {
   try {
     const config = await getConfigurations();
     console.log(config);
-    console.log(config.organization);
+    return config.launchFeature.enabled
+      ? res.json(productV1)
+      : res.json(productV2);
+  } catch (error) {
+    res.status(404);
+  }
+};
 
-    if (config.version === 'v1') {
-      res.send(productV1);
-    } else if (config.version === 'v2') {
-      res.send(productV2);
-    }
+exports.getOffers = async (req, res) => {
+  try {
+    const config = await getConfigurations();
+    return res.json(config.promotionalOffer);
   } catch (error) {
     res.status(404);
   }
